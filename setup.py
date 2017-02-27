@@ -52,9 +52,10 @@ class update_version (Command):
             text = open('%s.in' % (f,)).read()
             for (k, v) in self.substitutions.items():
                 text = text.replace('@%s@' % (k,), v)
-            os.chmod(f, os.stat(f)[stat.ST_MODE] | stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH)
+            old_mode = os.stat(f)[stat.ST_MODE]
+            os.chmod(f, old_mode | stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH)
             open(f,'w').write(text)
-            os.chmod(f, os.stat(f)[stat.ST_MODE] & ~(stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH))
+            os.chmod(f, old_mode)
 
 class test (Command):
 
